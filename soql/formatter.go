@@ -144,7 +144,7 @@ func WhereLike(field string, value string) (*WhereClause, error) {
 
 // WhereGreaterThan will form the greater or equal than expression.  If the value is a
 // string or boolean, an error is returned.
-func WhereGreaterThan(field string, value interface{}, equals bool) (*WhereClause, error) {
+func WhereGreaterThan(field string, value interface{}, equals bool, onlyDate bool) (*WhereClause, error) {
 	if field == "" {
 		return nil, errors.New("soql where: field can not be empty")
 	}
@@ -158,6 +158,9 @@ func WhereGreaterThan(field string, value interface{}, equals bool) (*WhereClaus
 	case time.Time:
 		date := value.(time.Time)
 		v = date.Format(time.RFC3339)
+		if onlyDate {
+			v = date.Format("2006-01-02")
+		}
 	default:
 		v = fmt.Sprintf("%v", value)
 	}
@@ -174,7 +177,7 @@ func WhereGreaterThan(field string, value interface{}, equals bool) (*WhereClaus
 
 // WhereLessThan will form the less or equal than expression.  If the value is a
 // string or boolean, an error is returned.
-func WhereLessThan(field string, value interface{}, equals bool) (*WhereClause, error) {
+func WhereLessThan(field string, value interface{}, equals bool, onlyDate bool) (*WhereClause, error) {
 	if field == "" {
 		return nil, errors.New("soql where: field can not be empty")
 	}
@@ -188,6 +191,9 @@ func WhereLessThan(field string, value interface{}, equals bool) (*WhereClause, 
 	case time.Time:
 		date := value.(time.Time)
 		v = date.Format(time.RFC3339)
+		if onlyDate {
+			v = date.Format("2006-01-02")
+		}
 	default:
 		v = fmt.Sprintf("%v", value)
 	}
